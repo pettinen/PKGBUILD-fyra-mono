@@ -1,32 +1,55 @@
-# Maintainer: Felix Yan <felixonmars@archlinux.org>
+# Maintainer: Jeremias Pettinen <hi@jeremi.as>
 
-pkgbase=fira-mono
-pkgname=(ttf-fira-mono otf-fira-mono)
+pkgbase=fyra-mono
+pkgname=(otf-fyra-mono ttf-fyra-mono)
 pkgver=3.206
-_tag=4.106  # Tags are at Fira Sans' version
-pkgrel=4
-epoch=2
-pkgdesc="Mozilla's typeface designed for Firefox OS (Monospace)"
+pkgrel=1
+pkgdesc="Customized version of Mozilla's monospace typeface"
 arch=('any')
-license=('custom:OFL')
+license=('OFL-1.1-no-RFN')
 url='https://github.com/mozilla/Fira'
-source=("$pkgbase-$pkgver.tar.gz::https://github.com/mozilla/Fira/archive/$_tag.tar.gz")
-sha512sums=('e8ad42351065f6a9308c5a7315f126886d243a6789425507a381a1d31443cd1aa8d981d04956bd2f2d0a193a9f3f7bc7d94cfec4b5dcfb0389d7d963295686d3')
+source=(
+    'git+https://github.com/mozilla/Fira.git'
+    'git+https://github.com/Templarian/MaterialDesign.git'
+    'add_icons.py'
+    'customize.patch'
+)
+sha256sums=(
+    'SKIP'
+    'SKIP'
+    '8734ad88a8a994111bf322451af25fba722025167257125704b02fe236a801ca'
+    '2a21cb3cafe12f625fd50bf97d754b2c9d6474b87f5152aac2b13d16ba9c9111'
+)
+makedepends=(
+    'fontforge'
+    'git'
+    'python-fontmake'
+)
+
+function build {
+    patch -Np1 -i customize.patch
+
+    fontmake -g Fira/source/glyphs/FiraMono.glyphs -o otf
+    python add_icons.py master_otf/FyraMono*.otf
+
+    fontmake -g Fira/source/glyphs/FiraMono.glyphs -o ttf
+    python add_icons.py master_ttf/FyraMono*.ttf
+}
 
 function _package {
-    cd Fira-$_tag
-
     case "$1" in
-        ttf-fira-mono)
-            pkgdesc="Mozilla's monospace typeface designed for Firefox OS"
-            cd ttf
-            fonts=(FiraMono*.ttf)
-            installdir=TTF;;
-        otf-fira-mono)
-            pkgdesc="Mozilla's monospace typeface designed for Firefox OS"
-            cd otf
-            fonts=(FiraMono*.otf)
+        otf-fyra-mono)
+            provides=(otf-fira-mono)
+            conflicts=(otf-fira-mono)
+            cd master_otf
+            fonts=(FyraMono*.otf)
             installdir=OTF;;
+        ttf-fyra-mono)
+            provides=(ttf-fira-mono)
+            conflicts=(ttf-fira-mono)
+            cd master_ttf
+            fonts=(FyraMono*.ttf)
+            installdir=TTF;;
     esac
 
     # Prepare destination directory
@@ -37,9 +60,9 @@ function _package {
         install -m644 "$font" "$pkgdir/usr/share/fonts/$installdir"
     done
 
-    install -D -m644 ../LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"   
+    install -D -m644 ../Fira/LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
 for _pkgname in ${pkgname[@]}; do
-    eval "function package_$_pkgname() { _package $_pkgname; }"
+    eval "function package_$_pkgname { _package $_pkgname; }"
 done

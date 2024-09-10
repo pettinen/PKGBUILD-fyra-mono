@@ -1,0 +1,26 @@
+pkgbase = fyra-mono
+	pkgdesc = Customized version of Mozilla's monospace typeface
+	pkgver = 3.206
+	pkgrel = 1
+	url = https://github.com/mozilla/Fira
+	arch = any
+	license = OFL-1.1-no-RFN
+	makedepends = fontforge
+	makedepends = git
+	makedepends = python-fontmake
+	source = git+https://github.com/mozilla/Fira.git
+	source = git+https://github.com/Templarian/MaterialDesign.git
+	source = add_icons.py
+	source = customize.patch
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = 2d2708c79e35db0388fa176121e9015d3a97d1e1267862307c439c4b7470439f
+	sha256sums = 2a21cb3cafe12f625fd50bf97d754b2c9d6474b87f5152aac2b13d16ba9c9111
+
+pkgname = otf-fyra-mono
+	provides = otf-fira-mono
+	conflicts = otf-fira-mono
+
+pkgname = ttf-fyra-mono
+	provides = ttf-fira-mono
+	conflicts = ttf-fira-mono
