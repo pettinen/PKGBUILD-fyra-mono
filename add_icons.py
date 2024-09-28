@@ -25,7 +25,7 @@ def edit(filename):
     for codepoint, name in ICONS.items():
         glyph = font.createChar(codepoint, name)
         glyph.importOutlines(f"MaterialDesign/svg/{name}.svg")
-        glyph.transform(psMat.scale(1200 / glyph.width))
+        glyph.transform(psMat.scale(600 / glyph.width))
 
     font.generate(filename)
     font.close()

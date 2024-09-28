@@ -1,0 +1,12 @@
+diff --unified --recursive --text a/Fira/source/glyphs/FiraMono.glyphs b/Fira/source/glyphs/FiraMono.glyphs
+--- a/Fira/source/glyphs/FiraMono.glyphs	2024-09-27 11:23:05.839156846 +0300
++++ b/Fira/source/glyphs/FiraMono.glyphs	2024-09-27 17:07:42.999594566 +0300
+@@ -67,7 +67,7 @@
+ date = "2015-09-08 09:59:06 +0000";
+ designer = "Carrois Corporate & Edenspiekermann AG";
+ designerURL = "http://www.carrois.com";
+-familyName = "Fira Mono";
++familyName = "Fyra Mono";
+ featurePrefixes = (
+ {
+ code = "languagesystem DFLT dflt;\012languagesystem latn dflt;\012languagesystem latn TAT;\012languagesystem latn TRK;\012languagesystem latn MOL;\012languagesystem latn ROM;\012languagesystem latn KAZ;\012languagesystem latn PLK;\012languagesystem latn AZE;\012languagesystem latn CAT;\012languagesystem latn CRT;\012languagesystem latn AFK;\012";

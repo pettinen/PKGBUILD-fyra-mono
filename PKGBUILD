@@ -3,6 +3,7 @@
 pkgbase=fyra-mono
 pkgname=(otf-fyra-mono ttf-fyra-mono)
 pkgver=3.206
+_tag=4.106  # Tags are at Fira Sans' version
 pkgrel=1
 pkgdesc="Customized version of Mozilla's monospace typeface"
 arch=('any')
@@ -12,24 +13,31 @@ source=(
     'git+https://github.com/mozilla/Fira.git'
     'git+https://github.com/Templarian/MaterialDesign.git'
     'add_icons.py'
-    'customize.patch'
+    'change_ttf_name.patch'
+    'fontedit.tar'
 )
 sha256sums=(
     'SKIP'
     'SKIP'
-    '8734ad88a8a994111bf322451af25fba722025167257125704b02fe236a801ca'
-    '2a21cb3cafe12f625fd50bf97d754b2c9d6474b87f5152aac2b13d16ba9c9111'
+    '26f2880cc660e6eca4158f91c57d3376a67100b1769cab58ac012df5c7573fa0'
+    'a1c80b984829069876a0b9459d9beca43fdea902b1ea5a2a7fb5fd21488e5e1b'
+    'a59810683a2e650c1d275da4fd4159c1a7f8b23336fdf9ab9147e68ad34b9f33'
 )
 makedepends=(
     'fontforge'
     'git'
+    'python'
     'python-fontmake'
 )
 
 function build {
-    patch -Np1 -i customize.patch
+    patch -Np1 -i change_ttf_name.patch
 
-    fontmake -g Fira/source/glyphs/FiraMono.glyphs -o otf
+    tar -xf fontedit.tar
+
+    mkdir master_otf
+    python -m fontedit -w Fira/otf/FiraMono-Regular.otf > master_otf/FyraMono-Regular.otf
+    python -m fontedit -w Fira/otf/FiraMono-Bold.otf > master_otf/FyraMono-Bold.otf
     python add_icons.py master_otf/FyraMono*.otf
 
     fontmake -g Fira/source/glyphs/FiraMono.glyphs -o ttf
